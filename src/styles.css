@@ -1,0 +1,376 @@
+@import "tailwindcss" source(none);
+@source "../src";
+
+/*
+ * SOMA FIELD design system.
+ * Two surfaces only: deep slate and warm ivory. Surfaces are selected with
+ * [data-surface="slate"] / [data-surface="ivory"], which re-map the semantic
+ * tokens below. Components never hardcode colours.
+ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-faint: var(--faint);
+  --color-field: var(--field);
+  --color-hairline: var(--hairline);
+  --color-action: var(--action);
+  --color-action-foreground: var(--action-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-slate: var(--slate);
+  --color-ivory: var(--ivory);
+  --color-blue: var(--blue);
+  --color-mist: var(--mist);
+  --color-clay: var(--clay);
+  --color-sky: var(--sky);
+  --color-linen: var(--linen);
+  --font-display: "Quicksand", Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --radius-pill: 999px;
+  --radius-card: 1.25rem;
+}
+
+:root {
+  --slate: oklch(0.3155 0.0224 229.96);
+  --slate-deep: oklch(0.2758 0.0209 228.05);
+  --slate-raised: oklch(0.357 0.0249 229.93);
+  --ivory: oklch(0.9522 0.0111 89.72);
+  --ivory-raised: oklch(0.9848 0.0054 95.1);
+  --blue: oklch(0.4416 0.0583 236.05);
+  --mist: oklch(0.8994 0.0109 204.12);
+  --grey: oklch(0.5506 0.0123 158.59);
+  --clay: oklch(0.6052 0.109 41.53);
+  /* A Familiar Rhythm: pale blue memory-echo and faded yellow textile. */
+  --sky: oklch(0.858 0.0465 238.4);
+  --linen: oklch(0.9134 0.0592 96.2);
+}
+
+[data-surface="slate"] {
+  --background: var(--slate);
+  --foreground: var(--ivory);
+  --muted-foreground: oklch(0.88 0.01 220);
+  --faint: oklch(0.76 0.014 225);
+  --field: var(--slate-raised);
+  --hairline: oklch(1 0 0 / 34%);
+  --action: var(--ivory);
+  --action-foreground: var(--slate);
+  --card: var(--slate-raised);
+  --card-foreground: var(--ivory);
+}
+
+[data-surface="ivory"] {
+  --background: var(--ivory);
+  --foreground: var(--slate);
+  --muted-foreground: oklch(0.44 0.012 158);
+  --faint: oklch(0.5 0.012 150);
+  --field: var(--ivory-raised);
+  --hairline: oklch(0.44 0.058 236 / 42%);
+  --action: var(--slate);
+  --action-foreground: var(--ivory);
+  --card: var(--ivory-raised);
+  --card-foreground: var(--slate);
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background-color: var(--slate);
+    color: var(--ivory);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-foreground);
+    outline-offset: 3px;
+  }
+}
+
+@utility field-breathe {
+  animation: soma-breathe 9s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@utility field-breathe-slow {
+  animation: soma-breathe 14s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@utility trace-draw {
+  stroke-dasharray: 1200;
+  animation: soma-draw 4.5s ease-out forwards;
+}
+
+@utility screen-enter {
+  animation: soma-enter 900ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@utility stage-enter {
+  animation: soma-enter 550ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@utility stitch-appear {
+  animation: soma-stitch 600ms ease-out both;
+}
+
+@utility piece-shift {
+  transition:
+    x 700ms cubic-bezier(0.32, 0.72, 0.24, 1),
+    y 700ms cubic-bezier(0.32, 0.72, 0.24, 1);
+}
+
+@utility contour-settle {
+  transition:
+    r 700ms cubic-bezier(0.32, 0.72, 0.24, 1),
+    stroke-opacity 700ms ease-out;
+}
+
+@utility wave-bar {
+  animation: soma-wave 2.4s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@utility echo-drift {
+  animation: soma-echo 11s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@utility touch-pulse {
+  animation: soma-pulse 1700ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  transform-origin: center;
+}
+
+@utility touch-pulse-echo {
+  animation: soma-pulse 1700ms cubic-bezier(0.22, 0.61, 0.36, 1) 320ms both;
+  transform-origin: center;
+}
+
+@utility choice-respond {
+  animation: soma-respond 520ms ease-out both;
+}
+
+/* SCENE 01 — window: rain, glass distortion, leaf movement, migrating light. */
+@utility rain-fall {
+  animation: soma-rain 9s linear infinite;
+}
+
+@utility glass-drift {
+  animation: soma-glass 12s ease-in-out infinite;
+}
+
+@utility glass-drift-slow {
+  animation: soma-glass 16s ease-in-out infinite reverse;
+}
+
+@utility light-breathe {
+  animation: soma-light 14s ease-in-out infinite;
+}
+
+@utility leaf-sway {
+  animation: soma-leaf 11s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* SCENE 03 — thread: slow tension and release along one line. */
+@utility thread-tension {
+  animation: soma-tension 13s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes soma-rain {
+  0% {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.9;
+  }
+  88% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(160px);
+    opacity: 0;
+  }
+}
+
+@keyframes soma-glass {
+  0%,
+  100% {
+    transform: translateX(-4px) scaleY(1);
+  }
+  50% {
+    transform: translateX(4px) scaleY(1.06);
+  }
+}
+
+@keyframes soma-light {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: translateX(-6px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(6px);
+  }
+}
+
+@keyframes soma-leaf {
+  0%,
+  100% {
+    transform: translate(-6px, 2px) rotate(-4deg);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translate(6px, -3px) rotate(5deg);
+    opacity: 1;
+  }
+}
+
+@keyframes soma-tension {
+  0%,
+  100% {
+    transform: scaleX(1) scaleY(1);
+  }
+  50% {
+    transform: scaleX(1.012) scaleY(0.985);
+  }
+}
+
+
+/* Very low-opacity material grain, generated rather than photographed. */
+@utility soma-grain {
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+@keyframes soma-stitch {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes soma-wave {
+  0%,
+  100% {
+    transform: scaleY(0.72);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scaleY(1.12);
+    opacity: 1;
+  }
+}
+
+@keyframes soma-respond {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+@keyframes soma-echo {
+  0%,
+  100% {
+    transform: translate(-5px, 5px);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(5px, -4px);
+    opacity: 0.85;
+  }
+}
+
+@keyframes soma-pulse {
+  from {
+    transform: scale(0.4);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+@keyframes soma-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.045);
+    opacity: 1;
+  }
+}
+
+@keyframes soma-draw {
+  from {
+    stroke-dashoffset: 1200;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes soma-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  /*
+   * Motion is replaced by a settled state rather than removed: rain, leaves,
+   * light and thread hold a visible resting position instead of vanishing at
+   * the end of a keyframe.
+   */
+  .rain-fall,
+  .glass-drift,
+  .glass-drift-slow,
+  .light-breathe,
+  .leaf-sway,
+  .thread-tension,
+  .field-breathe,
+  .field-breathe-slow,
+  .echo-drift {
+    animation: none !important;
+    transform: none !important;
+    opacity: 0.72;
+  }
+
+  .trace-draw {
+    animation: none !important;
+    stroke-dasharray: none;
+  }
+}
