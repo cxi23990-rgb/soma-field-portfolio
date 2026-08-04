@@ -39,14 +39,14 @@ The project moves from care-setting observations to a low-demand sensory interac
 ## Development
 
 ```sh
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
 Create a production build with:
 
 ```sh
-npm run build
+bun run build
 ```
 
 ## Technology
