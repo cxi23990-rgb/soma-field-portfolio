@@ -10,9 +10,7 @@ SOMA FIELD does not ask a person to learn a conventional app, remember instructi
 
 ## Repository status
 
-This public repository begins from the approved 4 August 2026 baseline. The baseline is a stable reference point rather than a declaration that the project can no longer evolve.
-
-The corresponding source tag is `baseline-2026-08-04`.
+This public repository contains the current portfolio snapshot of the project. It is a stable reference point for review and can continue to evolve without changing the earlier `baseline-2026-08-04` tag.
 
 ## Design principles
 
@@ -28,13 +26,13 @@ The corresponding source tag is `baseline-2026-08-04`.
 
 - Listen · Window — rain on old glass, window light, leaf shadows and a warming patch of light on the sill
 - Look · Cloth — a square of faded yellow cotton that answers the hand and curves into the shape of holding
-- Touch · Thread — a loose thread that forms a loop, a petal or a woven rhythm
+- Touch · Thread — a loose thread that follows the hand, forms loops and crossings, then rests unfinished
 
 Each route ends with an optional colour-and-word trace, which can be met again or removed.
 
 ## Design process
 
-The project moves from care-setting observations to a low-demand sensory interaction model, then tests that model through three distinct prototype scenes. The process and evidence boundary are documented in [docs/PROCESS.md](docs/PROCESS.md).
+The project moves from care-setting observations and an anonymised narrative to a low-demand sensory interaction model, then tests that model through three distinct prototype scenes. The process, evidence boundary and implemented encounter model are documented in [docs/PROCESS.md](docs/PROCESS.md).
 
 ## Development
 

@@ -3,12 +3,12 @@ import type { PointerEvent as ReactPointerEvent } from "react";
 import { playLullabyTone } from "@/lib/soma/audio";
 
 /*
- * A FAMILIAR RHYTHM.
+ * SCENE 02 — CLOTH & RHYTHM.
  *
- * Two layers everywhere: the present object drawn in warm, earthy line work,
- * and a cooler, translucent echo of the same shape a little behind it — a
- * remembered movement rather than an illustration of a person. Nothing here
- * names the object, asks a question, or scores an answer.
+ * One piece of faded yellow cotton, drawn in warm line work with a cooler,
+ * translucent echo a little behind it — a remembered movement rather than an
+ * illustration of a person. Nothing here names the object, asks a question,
+ * or scores an answer.
  */
 
 type ArtProps = { className?: string; stage?: number };
@@ -24,82 +24,6 @@ function WindowLight() {
       <line x1="204" y1="0" x2="204" y2="200" stroke="var(--sky)" strokeOpacity="0.28" />
       <line x1="232" y1="0" x2="232" y2="200" stroke="var(--sky)" strokeOpacity="0.2" />
     </g>
-  );
-}
-
-/** Stage 0–2: a pale yellow curve arriving, without being named. */
-export function RhythmCue({ className, stage = 0 }: ArtProps) {
-  const step = Math.min(stage, 2);
-  return (
-    <svg viewBox="0 0 260 200" className={className} role="presentation" aria-hidden="true">
-      <WindowLight />
-      <path
-        d="M22 158c14-58 62-96 118-96 34 0 60 14 78 34"
-        fill="none"
-        stroke="var(--linen)"
-        strokeWidth="2.4"
-        strokeLinecap="round"
-        className="trace-draw"
-        opacity={0.95}
-      />
-      <path
-        d="M22 170c14-58 62-96 118-96 34 0 60 14 78 34"
-        fill="none"
-        stroke="var(--linen)"
-        strokeOpacity="0.4"
-        strokeWidth="1.2"
-        className="echo-drift"
-      />
-
-      {step > 0 ? (
-        <circle cx="60" cy="170" r="18" fill="none" stroke={ink} strokeOpacity="0.4" className="stitch-appear" />
-      ) : null}
-      {step > 1 ? (
-        <circle cx="176" cy="170" r="18" fill="none" stroke={ink} strokeOpacity="0.4" className="stitch-appear" />
-      ) : null}
-      <line x1="0" y1="188" x2="260" y2="188" stroke={ink} strokeOpacity="0.3" />
-    </svg>
-  );
-}
-
-/** A folded pale-yellow textile, coming a little closer with each stage. */
-export function FoldedTextile({ className, stage = 0 }: ArtProps) {
-  const near = Math.min(stage, 2) * 8;
-  return (
-    <svg viewBox="0 0 260 200" className={className} role="presentation" aria-hidden="true">
-      <WindowLight />
-      <g className="echo-drift" opacity="0.5">
-        <path
-          d={`M52 ${104 - near}h150l-14 62H62z`}
-          fill="var(--sky)"
-          fillOpacity="0.22"
-          stroke="var(--sky)"
-          strokeOpacity="0.4"
-        />
-      </g>
-      <g className="field-breathe-slow">
-        <path
-          d={`M44 ${100 - near}c40-14 100-14 156 0l-12 66c-44-12-92-12-132 0z`}
-          fill="var(--linen)"
-          fillOpacity="0.9"
-          stroke="var(--clay)"
-          strokeOpacity="0.55"
-        />
-        <path
-          d={`M50 ${124 - near}c42-12 96-12 144 0`}
-          fill="none"
-          stroke="var(--clay)"
-          strokeOpacity="0.4"
-        />
-        <path
-          d={`M52 ${144 - near}c42-12 92-12 138 0`}
-          fill="none"
-          stroke="var(--clay)"
-          strokeOpacity="0.28"
-        />
-      </g>
-      <line x1="0" y1="184" x2="260" y2="184" stroke={ink} strokeOpacity="0.28" />
-    </svg>
   );
 }
 
@@ -131,37 +55,31 @@ export function EmbraceForm({ className, stage = 0 }: ArtProps) {
           strokeOpacity="0.6"
           strokeWidth="1.6"
         />
-        <path
-          d={arc(outer - 12)}
-          fill="none"
-          stroke="var(--clay)"
-          strokeOpacity="0.35"
-        />
+        <path d={arc(outer - 12)} fill="none" stroke="var(--clay)" strokeOpacity="0.35" />
       </g>
       <line x1="0" y1={base} x2="260" y2={base} stroke={ink} strokeOpacity="0.28" />
     </svg>
-
   );
 }
 
 type Pulse = { id: number; x: number; y: number };
 
 /**
- * The cloth, responding to a hand. Smoothing or a slow patting rhythm — each
- * touch leaves a widening pulse, a delayed outline behind it, and one soft
- * lullaby tone. Nothing is counted for the person; nothing is stored.
+ * The one continuous cloth, responding to a hand. A slow drag leaves a warm
+ * highlight, flattens a fold, and — as the scene settles — reveals a curved,
+ * holding-like form breathing quietly. Nothing is counted; nothing is stored.
  */
 export function ClothField({
-  mode,
+  phase = 0,
   onTouch,
   className,
 }: {
-  mode: "smooth" | "pat";
+  /** 0 arrive · 1 respond · 2 rhythm · 3 rest. */
+  phase?: number;
   onTouch?: (touches: number) => void;
   className?: string;
 }) {
   const [pulses, setPulses] = useState<Pulse[]>([]);
-  /** Where the hand is now, and how warm the cloth has become. */
   const [hand, setHand] = useState<{ x: number; y: number } | null>(null);
   const [warmth, setWarmth] = useState(0);
   const touches = useRef(0);
@@ -176,8 +94,11 @@ export function ClothField({
   );
 
   const gradientId = useId().replace(/:/g, "");
+  const step = Math.min(phase, 3);
+  /** The fold flattens as the scene moves on, and a curve forms at the end. */
+  const flatten = step * 4;
+  const curve = step >= 2;
 
-  /** The surface answers where the hand passes, with or without a tap. */
   const follow = useCallback((event: ReactPointerEvent<SVGSVGElement>) => {
     const box = event.currentTarget.getBoundingClientRect();
     setHand({
@@ -189,7 +110,7 @@ export function ClothField({
   const respond = useCallback(
     (event: ReactPointerEvent<SVGSVGElement>) => {
       const now = Date.now();
-      if (now - last.current < (mode === "pat" ? 420 : 260)) return;
+      if (now - last.current < 300) return;
       last.current = now;
 
       const box = event.currentTarget.getBoundingClientRect();
@@ -209,7 +130,7 @@ export function ClothField({
       touches.current += 1;
       onTouch?.(touches.current);
     },
-    [mode, onTouch],
+    [onTouch],
   );
 
   return (
@@ -223,7 +144,7 @@ export function ClothField({
       onPointerMove={(event) => {
         follow(event);
         if (event.pointerType === "mouse" && event.buttons !== 1) return;
-        if (mode === "smooth") respond(event);
+        respond(event);
       }}
     >
       <defs>
@@ -246,7 +167,7 @@ export function ClothField({
         />
       </g>
 
-      <g className={mode === "pat" ? "field-breathe" : undefined}>
+      <g className={step >= 2 ? "field-breathe" : undefined}>
         <path
           d="M34 88c46-16 110-16 178 0l-10 78c-54-14-110-14-158 0z"
           fill="var(--linen)"
@@ -255,23 +176,44 @@ export function ClothField({
           strokeOpacity="0.55"
           strokeWidth="1.4"
         />
-        {[112, 132, 152].map((y) => (
+        {[112, 132, 152].map((y, index) => (
           <path
             key={y}
-            d={`M42 ${y}c46-12 104-12 152 0`}
+            d={`M42 ${y}c46 ${-Math.max(0, 12 - flatten - index * 2)} 104 ${-Math.max(0, 12 - flatten - index * 2)} 152 0`}
             fill="none"
             stroke="var(--clay)"
-            strokeOpacity="0.3"
+            strokeOpacity={0.3 - step * 0.04}
+            style={{ transition: "d 900ms ease-out, stroke-opacity 900ms ease-out" }}
           />
         ))}
       </g>
+
+      {/* the holding curve the cloth settles into */}
+      {curve ? (
+        <g className="field-breathe-slow">
+          <path
+            d="M56 166A74 74 0 0 1 204 166"
+            fill="none"
+            stroke="var(--clay)"
+            strokeOpacity="0.6"
+            strokeWidth="1.8"
+            className="trace-draw"
+          />
+          <path
+            d="M78 166A52 52 0 0 1 182 166"
+            fill="none"
+            stroke="var(--clay)"
+            strokeOpacity="0.35"
+          />
+        </g>
+      ) : null}
 
       {/* The weave warms where the hand has been. */}
       <path
         d="M34 88c46-16 110-16 178 0l-10 78c-54-14-110-14-158 0z"
         fill="var(--clay)"
         style={{ transition: "fill-opacity 700ms ease-out" }}
-        fillOpacity={warmth * 0.16}
+        fillOpacity={warmth * 0.16 + step * 0.03}
       />
 
       {/* A soft light that follows the hand across the cloth. */}
